@@ -13,4 +13,4 @@ classifiers = ["License :: OSI Approved :: MIT License", "Framework :: IPython"]
 dynamic = ["version", "description"]
 
 [project.urls]
-Home = "https://bitsofcs.com"
+Home = "https://github.com/rkulskis/jupytex"
