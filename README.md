@@ -30,7 +30,13 @@ a standard page layout. Currently `texify()` crops to content; although there
 are slight things that are off about the margins. The goal is to fix this in
 the next release!
 
-## Tests directory
-Currently this directory is empty. Some ideas for testing could be to use
-selenium for screenshotting and comparing images with known working
-versions.
+# Tests directory
+Currently this directory contains screenshots but no automated tests. Some 
+ideas for testing could be to use selenium for screenshotting and comparing 
+images with known working versions.
+
+# Example Runs
+![](./tests/magic.png)
+![](./tests/tikz.png)
+![](./tests/algorithm.png)
+![](./tests/matrix.png)
