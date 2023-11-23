@@ -37,11 +37,10 @@ are slight things that are off about the margins. The goal is to fix this in
 the next release!
 
 For some reason, the compilation does not work properly with JupyterNotebook;
-however, it works just fine with JupyterLab. The tests directory shows the difference
-in output.
+however, it works just fine with JupyterLab.
 
 # Tests directory
-Currently this directory contains a screenshot and `notebook.ipynb` and `lab.ipynb`, which are
+Currently this directory contains a screenshot and `lab.ipynb`, which are
 Jupyter example runs. Some ideas for testing could be to use selenium for 
 screenshotting and comparing images with known working versions.
 
