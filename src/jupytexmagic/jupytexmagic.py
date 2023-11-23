@@ -1,3 +1,4 @@
+
 from __future__ import print_function
 from IPython.core.magic import (Magics, magics_class, line_magic,
                                 cell_magic, line_cell_magic)
@@ -19,12 +20,43 @@ class Jupytex(Magics):
         with tempfile.TemporaryDirectory() as tmpdir:
             tex_path = os.path.join(tmpdir, 'temp.tex')
             pdf_path = os.path.join(tmpdir, 'temp.pdf')
-    
+            cwd = os.getcwd()
+            cell = cell.replace('{./', f'{{{cwd}/') # do this to fix include paths since using a temporary directory
             with open(tex_path, 'w') as f:
                 f.write(cell)
-
-            subprocess.run(['pdflatex', '-output-directory', tmpdir, tex_path], check=True)
+            
+            subprocess.run(['pdflatex', '-shell-escape', '-output-directory', tmpdir, tex_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
             subprocess.run(["pdfcrop", "--margins", "0 0 0 0", pdf_path, pdf_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            with open(pdf_path, 'rb') as f:
+                reader = PdfReader(pdf_path)
+                num_pages = len(reader.pages)
+                for page_num in range(1, num_pages + 1):
+                    svg_path = pdf_path[:-4] + f"{page_num}.svg"    
+                    # Convert PDF to SVG
+                    subprocess.run(["pdf2svg", pdf_path, svg_path, str(page_num)])
+                    
+                    # full scale the SVG
+                    replacement_string = replacement_string = """<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 469 621">\n"""
+                    with open(svg_path, 'r') as file:
+                        lines = file.readlines()
+                    lines = [replacement_string] + lines[2:]
+                    with open(svg_path, 'w') as file:
+                        file.writelines(lines)  
+                        
+                    # display SVG
+                    display(SVG(filename=svg_path))
+    @cell_magic
+    def texdebug(self, line, cell): # shows output from os commands for debugging purposes (e.g. if pdflatex fails, you can see the error log)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tex_path = os.path.join(tmpdir, 'temp.tex')
+            pdf_path = os.path.join(tmpdir, 'temp.pdf')
+            cwd = os.getcwd()
+            cell = cell.replace('{./', f'{{{cwd}/') # do this to fix include paths since using a temporary directory
+            with open(tex_path, 'w') as f:
+                f.write(cell)
+            
+            subprocess.run(['pdflatex', '-shell-escape', '-output-directory', tmpdir, tex_path])
+            subprocess.run(["pdfcrop", "--margins", "0 0 0 0", pdf_path, pdf_path])
             with open(pdf_path, 'rb') as f:
                 reader = PdfReader(pdf_path)
                 num_pages = len(reader.pages)
@@ -56,3 +88,4 @@ def load_ipython_extension(ipython):
     # You can register the class itself without instantiating it.  IPython will
     # call the default constructor on it.
     ipython.register_magics(Jupytex)
+

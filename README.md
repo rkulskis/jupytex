@@ -27,6 +27,9 @@ which you cannot do with normal image formats like PNG/JPEG.
 2. create a new cell with `import jupytexmagic` and `%load_ext jupytexmagic`
 3. have fun! for tex cells, place `%%tex` at the top of your cell **Note: see test/jupytexmagic.ipynb for an example run**
 
+If your tex compilation fails, you can use the `%%texdebug` magic command
+to display the output of `pdflatex` when compiling for debugging purposes.
+
 # Current Limitations
 Because jupytex presents the compiled LaTeX in `.svg` format, it assumes
 a standard page layout. Currently `texify()` crops to content; although there
