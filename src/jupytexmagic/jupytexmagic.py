@@ -23,7 +23,7 @@ class Jupytex(Magics):
             with open(tex_path, 'w') as f:
                 f.write(cell)
 
-            subprocess.run(['pdflatex', '-output-directory', tmpdir, tex_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+            subprocess.run(['pdflatex', '-output-directory', tmpdir, tex_path], check=True)
             subprocess.run(["pdfcrop", "--margins", "0 0 0 0", pdf_path, pdf_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             with open(pdf_path, 'rb') as f:
                 reader = PdfReader(pdf_path)
