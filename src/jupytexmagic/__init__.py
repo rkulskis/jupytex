@@ -5,6 +5,6 @@ This module provides functionality for integrating and transforming Jupyter Note
 """
 
 # Rest of your __init__.py code...
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 from .jupytexmagic import load_ipython_extension

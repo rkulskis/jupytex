@@ -36,9 +36,13 @@ a standard page layout. Currently `texify()` crops to content; although there
 are slight things that are off about the margins. The goal is to fix this in
 the next release!
 
+For some reason, the compilation does not work properly with JupyterNotebook;
+however, it works just fine with JupyterLab. The tests directory shows the difference
+in output.
+
 # Tests directory
-Currently this directory contains a screenshot and `jupytexmagic.ipynb`, a
-notebook example run. Some ideas for testing could be to use selenium for 
+Currently this directory contains a screenshot and `notebook.ipynb` and `lab.ipynb`, which are
+Jupyter example runs. Some ideas for testing could be to use selenium for 
 screenshotting and comparing images with known working versions.
 
 # Example Run Screenshot
