@@ -5,7 +5,7 @@ description-file = "README.md"
 requires-python = ">=3.6"
 
 [project]
-name = "jupytex"
+name = "jupytexmagic"
 authors = [{name = "Ross Mikulskis", email = "rkulskis@gmail.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}

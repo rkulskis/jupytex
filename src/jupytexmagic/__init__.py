@@ -1,5 +1,5 @@
 """
-This is the jupytex module.
+This is the jupytexmagic module.
 
 This module provides functionality for integrating and transforming Jupyter Notebook content with LaTeX documents, allowing for seamless incorporation of dynamic code outputs into a LaTeX typeset document.
 """
@@ -7,4 +7,4 @@ This module provides functionality for integrating and transforming Jupyter Note
 # Rest of your __init__.py code...
 __version__ = '0.1.0'
 
-from .jupytex import load_ipython_extension
+from .jupytexmagic import load_ipython_extension
