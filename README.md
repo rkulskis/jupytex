@@ -22,7 +22,10 @@ The `.svg` format is great because it doesn't lose any definition upon
 zooming in on the compiled LaTeX and you can highlight text with your cursor,
 which you cannot do with normal image formats like PNG/JPEG.
 
-To load the module in ipython use: `get_ipython().register_magic_function(tex, 'cell')`
+# Usage
+1. run `pip install jupytexmagic`
+2. create a new cell with `import jupytexmagic` and `%load_ext jupytexmagic`
+3. have fun! for tex cells, place `%%tex` at the top of your cell **Note: see test/jupytexmagic.ipynb for an example run**
 
 # Current Limitations
 Because jupytex presents the compiled LaTeX in `.svg` format, it assumes
@@ -31,12 +34,9 @@ are slight things that are off about the margins. The goal is to fix this in
 the next release!
 
 # Tests directory
-Currently this directory contains screenshots but no automated tests. Some 
-ideas for testing could be to use selenium for screenshotting and comparing 
-images with known working versions.
+Currently this directory contains a screenshot and `jupytexmagic.ipynb`, a
+notebook example run. Some ideas for testing could be to use selenium for 
+screenshotting and comparing images with known working versions.
 
-# Example Runs
-![](./tests/magic.png)
-![](./tests/tikz.png)
+# Example Run Screenshot
 ![](./tests/algorithm.png)
-![](./tests/matrix.png)
