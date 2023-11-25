@@ -32,15 +32,15 @@ If your tex compilation fails, you can use the `%%texdebug` magic command
 to display the output of `pdflatex` when compiling for debugging purposes.
 
 # Current Limitations
-Because jupytex presents the compiled LaTeX in `.svg` format, it assumes
-a standard page layout. Currently `texify()` crops to content; although there
-are slight things that are off about the margins. The goal is to fix this in
-the next release!
 
 For some reason, the compilation does not work properly with JupyterNotebook;
 however, it works just fine with JupyterLab. Currently uploading the source
 `.ipynb` files ruins the view on GitHub, but displaying and building inside
 a Jupyter Book works properly (see images attached in [example run screenshots](#Example Run Screenshots)
+
+Writing LaTeX that compiles to less than one line of text will be scaled to maximum width. 
+This is a fair trade for having the output `svg` output be standardized for the majority of
+use cases.
 
 # Tests directory
 Currently this directory contains a screenshot and `lab.ipynb`, which are
