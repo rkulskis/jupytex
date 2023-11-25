@@ -31,6 +31,9 @@ which you cannot do with normal image formats like PNG/JPEG.
 If your tex compilation fails, you can use the `%%texdebug` magic command
 to display the output of `pdflatex` when compiling for debugging purposes.
 
+See https://rkulskis.github.io/enhanced-ope/jupytexmagic/Getting_Started.html for an example
+GitHub pages website using Jupytexmagic!
+
 # Current Limitations
 
 For some reason, the compilation does not work properly with JupyterNotebook;
