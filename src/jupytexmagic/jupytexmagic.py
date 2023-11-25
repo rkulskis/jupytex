@@ -1,4 +1,3 @@
-
 from __future__ import print_function
 from IPython.core.magic import (Magics, magics_class, line_magic,
                                 cell_magic, line_cell_magic)
@@ -22,60 +21,49 @@ class Jupytex(Magics):
             pdf_path = os.path.join(tmpdir, 'temp.pdf')
             cwd = os.getcwd()
             cell = cell.replace('{./', f'{{{cwd}/') # do this to fix include paths since using a temporary directory
-            with open(tex_path, 'w') as f:
+            
+            with open(tex_path, 'a') as f: # standardize document class since pdfcrop expevts continous page
+                f.write("\documentclass[varwidth, margin=1in]{standalone}")
+                f.write("\pagenumbering{gobble}")
                 f.write(cell)
             
             subprocess.run(['pdflatex', '-shell-escape', '-output-directory', tmpdir, tex_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-            subprocess.run(["pdfcrop", "--margins", "0 0 0 0", pdf_path, pdf_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            with open(pdf_path, 'rb') as f:
-                reader = PdfReader(pdf_path)
-                num_pages = len(reader.pages)
-                for page_num in range(1, num_pages + 1):
-                    svg_path = pdf_path[:-4] + f"{page_num}.svg"    
-                    # Convert PDF to SVG
-                    subprocess.run(["pdf2svg", pdf_path, svg_path, str(page_num)])
-                    
-                    # full scale the SVG
-                    replacement_string = replacement_string = """<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 469 621">\n"""
-                    with open(svg_path, 'r') as file:
-                        lines = file.readlines()
-                    lines = [replacement_string] + lines[2:]
-                    with open(svg_path, 'w') as file:
-                        file.writelines(lines)  
-                        
-                    # display SVG
-                    display(SVG(filename=svg_path))
+            subprocess.run(["pdfcrop", pdf_path, pdf_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            svg_path = pdf_path[:-4] + ".svg"    
+            # Convert PDF to SVG
+            subprocess.run(["pdf2svg", pdf_path, svg_path])
+
+            # full scale the SVG
+            subprocess.run(["sed", "-i", """''""", """2s/width="[^"]*"/width="100%"/; 2s/height="[^"]*"/height="100%"/""", svg_path]) 
+
+            # display SVG
+            display(SVG(filename=svg_path))
     @cell_magic
-    def texdebug(self, line, cell): # shows output from os commands for debugging purposes (e.g. if pdflatex fails, you can see the error log)
+    def texdebug(self, line, cell):
         with tempfile.TemporaryDirectory() as tmpdir:
             tex_path = os.path.join(tmpdir, 'temp.tex')
             pdf_path = os.path.join(tmpdir, 'temp.pdf')
             cwd = os.getcwd()
             cell = cell.replace('{./', f'{{{cwd}/') # do this to fix include paths since using a temporary directory
-            with open(tex_path, 'w') as f:
+            
+            with open(tex_path, 'a') as f:
+                f.write("\documentclass[varwidth, margin=1in]{standalone}")
+                f.write("\pagenumbering{gobble}")
                 f.write(cell)
             
-            subprocess.run(['pdflatex', '-shell-escape', '-output-directory', tmpdir, tex_path])
-            subprocess.run(["pdfcrop", "--margins", "0 0 0 0", pdf_path, pdf_path])
-            with open(pdf_path, 'rb') as f:
-                reader = PdfReader(pdf_path)
-                num_pages = len(reader.pages)
-                for page_num in range(1, num_pages + 1):
-                    svg_path = pdf_path[:-4] + f"{page_num}.svg"    
-                    # Convert PDF to SVG
-                    subprocess.run(["pdf2svg", pdf_path, svg_path, str(page_num)])
-                    
-                    # full scale the SVG
-                    replacement_string = replacement_string = """<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 469 621">\n"""
-                    with open(svg_path, 'r') as file:
-                        lines = file.readlines()
-                    lines = [replacement_string] + lines[2:]
-                    with open(svg_path, 'w') as file:
-                        file.writelines(lines)  
-                        
-                    # display SVG
-                    display(SVG(filename=svg_path))
+            subprocess.run(['pdflatex', '-shell-escape', '-output-directory', tmpdir, tex_path], check=True)
+            subprocess.run(["pdfcrop", pdf_path, pdf_path])
+            
+            svg_path = pdf_path[:-4] + ".svg"    
+            # Convert PDF to SVG
+            subprocess.run(["pdf2svg", pdf_path, svg_path])
 
+            # full scale the SVG
+            subprocess.run(["sed", "-i", """''""", """2s/width="[^"]*"/width="100%"/; 2s/height="[^"]*"/height="100%"/""", svg_path]) 
+
+            # display SVG
+            display(SVG(filename=svg_path))
 # In order to actually use these magics, you must register them with a
 # running IPython.
 

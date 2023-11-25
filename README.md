@@ -26,6 +26,7 @@ which you cannot do with normal image formats like PNG/JPEG.
 1. run `pip install jupytexmagic`
 2. create a new cell with `import jupytexmagic` and `%load_ext jupytexmagic`
 3. have fun! for tex cells, place `%%tex` at the top of your cell **Note: see test/jupytexmagic.ipynb for an example run**
+4. Currently the document class is standalone with variable height `\documentclass[varwidth, margin=1in]{standalone}` and has page numbers turned off `\pagenumbering{gobble}` but other than that, you can fully customize the output. This is needed so that the rendering of the svg is continous similar to how Jupyter renders markdown.
 
 If your tex compilation fails, you can use the `%%texdebug` magic command
 to display the output of `pdflatex` when compiling for debugging purposes.
